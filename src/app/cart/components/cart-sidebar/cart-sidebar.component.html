@@ -1,0 +1,93 @@
+<div class="h-full flex flex-col bg-base-100">
+  <!-- Header -->
+  <div class="px-6 pt-7 pb-5">
+    <div class="flex items-center justify-between">
+      <h3 class="text-lg font-montserrat uppercase tracking-widest select-none">
+        Shopping Bag
+        <span class="text-neutral/60 text-sm">({{ cartService.cartItemCount() }})</span>
+      </h3>
+      <button
+        class="p-2 -mr-2 hover:text-accent transition-colors duration-200 cursor-pointer"
+        (click)="onClose()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Top scroll indicator -->
+  <div 
+    class="flex justify-start pl-6"
+    [style.paddingRight]="scrollbarTakesSpace() ? 'calc(8 * 0.25rem)' : 'calc(6 * 0.25rem)'">
+    <div
+      class="h-px w-full bg-base-content/10 transition-opacity duration-300"
+      [style.opacity]="canScrollUp() ? '1' : '0'">
+    </div>
+  </div>
+
+  <!-- Items -->
+  <div
+    class="flex-1 min-h-0"
+    [style.paddingRight]="scrollbarTakesSpace() ? 'calc(5.5 * 0.25rem)' : '0'">
+    <div
+      #scrollContainer
+      class="h-full overflow-y-auto overflow-x-hidden [scrollbar-width:thin] [scrollbar-color:var(--color-base-300)_transparent] pl-6 pt-3 pb-3"
+      [style.paddingRight]="scrollbarTakesSpace() ? '0rem' : '1.5rem'"
+      (scroll)="checkScroll()">
+      @if (cartService.cartItems().length === 0) {
+        <div class="flex flex-col items-center justify-center py-16 text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 15 15" class="mb-4 text-neutral/25"><path fill="currentColor" d="m2.401 6.39l-.497-.056zm-.778 7l.497.055zm11.754 0l-.497.055zm-.778-7l.497-.056zM1.904 6.334l-.778 7l.994.11l.778-7zM2.617 15h9.766v-1H2.617zm11.257-1.666l-.778-7l-.994.11l.778 7zM11.604 5H3.396v1h8.21zm1.492 1.334A1.5 1.5 0 0 0 11.605 5v1a.5.5 0 0 1 .497.445zM12.383 15a1.5 1.5 0 0 0 1.49-1.666l-.993.11a.5.5 0 0 1-.497.556zM1.126 13.334A1.5 1.5 0 0 0 2.617 15v-1a.5.5 0 0 1-.497-.555zm1.772-6.89A.5.5 0 0 1 3.395 6V5a1.5 1.5 0 0 0-1.49 1.334zM5 4v-.5H4V4zm5-.5V4h1v-.5zM7.5 1A2.5 2.5 0 0 1 10 3.5h1A3.5 3.5 0 0 0 7.5 0zM5 3.5A2.5 2.5 0 0 1 7.5 1V0A3.5 3.5 0 0 0 4 3.5z" stroke-width="0.1"/></svg>
+          <p class="font-montserrat text-lg select-none">Your bag is empty</p>
+          <p class="text-sm text-neutral/45 mt-1.5 max-w-[200px] select-none">Browse our collection and find something you love.</p>
+        </div>
+      }
+
+      <div class="space-y-6">
+        @for (item of cartService.cartItems(); track item.id) {
+          <cart-item-card
+            [item]="item"
+            [compact]="true"
+            (quantityChange)="onQuantityChange(item.id!, $event)"
+            (remove)="onRemoveItem(item.id!)"
+          />
+          @if (!$last) {
+            <div class="border-b border-base-content/8"></div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom scroll indicator -->
+  <div 
+    class="flex justify-end pl-6"
+    [style.paddingRight]="scrollbarTakesSpace() ? 'calc(8 * 0.25rem)' : 'calc(6 * 0.25rem)'">
+    <div
+      class="h-px w-full bg-base-content/10 transition-opacity duration-300"
+      [style.opacity]="canScrollDown() ? '1' : '0'">
+    </div>
+  </div>
+
+  <!-- Footer -->
+  @if (cartService.cartItems().length > 0) {
+    <div class="px-6 pt-5 pb-6">
+      <!-- Subtotal + Shipping (tight pair) -->
+      <div class="flex justify-between items-baseline">
+        <span class="text-sm font-montserrat text-neutral/60">Subtotal</span>
+        <span class="font-montserrat text-xl">{{ cartService.cartTotal() | currency }}</span>
+      </div>
+      <p class="text-xs text-neutral/45 mt-1 select-none">Shipping & taxes calculated at checkout.</p>
+
+      <!-- CTAs (paired actions) -->
+      <a routerLink="/checkout"
+         class="block text-center w-full text-sm font-montserrat uppercase tracking-widest py-2.5 mt-5 bg-base-content text-base-100 hover:bg-primary transition-colors duration-300 select-none"
+         (click)="onClose()">
+        Checkout
+      </a>
+      <a routerLink="/cart"
+         class="block text-center w-full text-sm font-montserrat py-3 text-neutral/60 hover:text-accent underline underline-offset-4 decoration-neutral/25 hover:decoration-accent transition-colors duration-200 select-none"
+         (click)="onClose()">
+        View bag
+      </a>
+    </div>
+  }
+</div>

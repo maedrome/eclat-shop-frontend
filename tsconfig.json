@@ -10,7 +10,8 @@
       "@shared/*": ["./src/app/shared/*"],
       "@store-front/*": ["./src/app/store-front/*"],
       "@admin-dashboard/*": ["./src/app/admin-dashboard/*"],
-      "@utils/*":["./src/app/utils/*"]
+      "@utils/*":["./src/app/utils/*"],
+      "@cart/*":["./src/app/cart/*"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

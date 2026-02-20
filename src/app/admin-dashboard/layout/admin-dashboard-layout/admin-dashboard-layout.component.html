@@ -1,63 +1,118 @@
-<div class="drawer lg:drawer-open max-w-7xl xl:max-w-[1669px] mx-auto lg:px-8 lg:gap-8">
+<div id="admin-drawer" class="drawer lg:drawer-open max-w-7xl xl:max-w-[1669px] mx-auto lg:px-8 lg:gap-10">
   <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content flex-1">
-    <!-- Page content here -->
     <admin-navbar></admin-navbar>
-    <div class="max-lg:px-4 py-4">
+    <div class="max-lg:px-4 py-6 lg:py-8">
       <router-outlet></router-outlet>
     </div>
   </div>
   <div class="drawer-side z-50! font-montserrat">
     <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
-    <div id="menu" class="bg-white min-h-screen text-neutral w-80 h-screen overflow-y-auto px-4 lg:px-0">
-           <div id="logo" class="py-0 lg:py-3">
-                <a class="btn btn-ghost text-xl pb-[2px] cursor-pointer hover:bg-inherit hover:border-transparent border-transparent max-lg:hidden" routerLink="/">Tesso <span class="text-primary">| Shop</span></a>
-                <p class="px-4 pt-5 pb-[0.55rem] lg:pt-0 lg:pb-0 text-primary lg:text-secondary text-lg"><span class="text-base-content lg:text-secondary">Manage</span> your products</p>
-           </div>
-           <div class="divider px-4 my-0"></div>
-           <div id="profile" class="text-base-content pt-4 pb-4">
-            <p class="mb-2 text-secondary">Welcome back,</p>
-            <a href="#" class="inline-flex space-x-3 items-center">
-                <span>
-                    <img class="rounded-full w-8 h-8" src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=128&q=80" alt="">
-                </span>
-                <span class="text-base font-semibold">
-                    {{user()?.fullName}}
-                </span>
-                </a>
-           </div>
-           <div class="divider px-4 my-0"></div>
-           <ul id="nav" class="menu w-full px-0 my-2 gap-2">
-            <li>
-              <a routerLink="/admin" routerLinkActive="menu-active" [routerLinkActiveOptions]="{exact: true}">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
-                </svg>
-                <div class="flex flex-col">
-                    <span class="text-base">Dashboard</span>
-                    <span class="text-sm text-secondary  -mt-1">Data Overview</span>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/admin/products" routerLinkActive="menu-active">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
-                      </svg>                      
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-base">Products</span>
-                    <span class="text-sm text-secondary  -mt-1">Products List</span>
-                </div>
-              </a>
-            </li>
-           </ul>
-           <div class="divider px-4 my-0"></div>
-           <button class="btn btn-soft btn-error btn-lg px-3 w-full justify-start my-4 gap-2 text-base font-medium" (click)="authService.logout()">
-               <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24"> <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"> <path stroke-linejoin="round" d="M15 12H2m0 0l3.5-3M2 12l3.5 3" /> <path d="M9.002 7c.012-2.175.109-3.353.877-4.121C10.758 2 12.172 2 15 2h1c2.829 0 4.243 0 5.122.879C22 3.757 22 5.172 22 8v8c0 2.828 0 4.243-.878 5.121c-.769.769-1.947.865-4.122.877M9.002 17c.012 2.175.109 3.353.877 4.121c.641.642 1.568.815 3.121.862" /> </g> </svg>
-               <span class="inline-flex">Logout</span>
-           </button>
+    <div class="bg-base-100 lg:bg-transparent min-h-screen text-base-content w-72 h-screen overflow-y-auto px-6 lg:px-0 flex flex-col">
+
+      <!-- Logo -->
+      <div class="flex items-center h-16 max-lg:hidden">
+        <a class="text-xl select-none tracking-wide font-montserrat pb-[2px] group hover:text-primary transition-all duration-400" routerLink="/">
+          Tesso <span class="text-primary group-hover:text-secondary transition-all duration-400">| Shop</span>
+        </a>
+        <span class="text-xs uppercase tracking-widest text-neutral/50 ml-3 pt-[2px] hidden sm:inline select-none">Admin</span>
+      </div>
+
+      <div class="border-b border-base-content/8 max-lg:hidden"></div>
+
+      <!-- Profile -->
+      <div class="py-3.5 lg:py-6">
+        <div class="flex items-center gap-3.5">
+          <div class="w-8 h-8 lg:w-10 lg:h-10 bg-primary flex items-center justify-center rounded-full text-sm font-montserrat uppercase text-base-100 select-none shrink-0">
+            {{ user()?.fullName?.charAt(0) }}
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-montserrat truncate">{{ user()?.fullName }}</p>
+            <div class="flex items-center gap-1.5 lg:mt-0.5">
+              <p class="text-xs text-neutral/45 truncate select-none">Administrator</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-b border-base-content/8"></div>
+
+      <!-- Navigation -->
+      <nav class="py-6 flex-1">
+        <ul class="flex flex-col gap-0.5">
+          <li>
+            <a
+              routerLink="/admin"
+              routerLinkActive="text-base-content bg-base-200/70"
+              [routerLinkActiveOptions]="{exact: true}"
+              class="flex items-center gap-3 px-3 py-2.5 text-sm font-montserrat text-neutral/70 hover:text-base-content hover:bg-base-200/40 transition-all duration-200 select-none"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a
+              routerLink="/admin/products"
+              routerLinkActive="text-base-content bg-base-200/70"
+              class="flex items-center gap-3 px-3 py-2.5 text-sm font-montserrat text-neutral/70 hover:text-base-content hover:bg-base-200/40 transition-all duration-200 select-none"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M5.839 2.545A2.25 2.25 0 0 1 7.307 2h1.735a.75.75 0 0 1 .74.626a2.25 2.25 0 0 0 4.437 0a.75.75 0 0 1 .74-.626h1.734a2.25 2.25 0 0 1 1.468.545l4.078 3.512a.75.75 0 0 1 .17.927l-1.875 3.438a.75.75 0 0 1-1.029.293l-.755-.428v9.463A2.25 2.25 0 0 1 16.5 22h-9a2.25 2.25 0 0 1-2.25-2.25v-9.463l-.755.428a.75.75 0 0 1-1.028-.293L1.592 6.984a.75.75 0 0 1 .169-.927zm1.468.955a.75.75 0 0 0-.49.182L3.2 6.798l1.22 2.236l1.211-.687A.75.75 0 0 1 6.75 9v10.75c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75V9a.75.75 0 0 1 1.12-.653l1.212.687l1.22-2.236l-3.62-3.116a.75.75 0 0 0-.489-.182h-1.157a3.75 3.75 0 0 1-7.072 0z"/></svg>
+              Products
+            </a>
+          </li>
+          <li>
+            <a
+              routerLink="/admin/orders"
+              routerLinkActive="text-base-content bg-base-200/70"
+              class="flex items-center gap-3 px-3 py-2.5 text-sm font-montserrat text-neutral/70 hover:text-base-content hover:bg-base-200/40 transition-all duration-200 select-none"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+              Orders
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="border-b border-base-content/8"></div>
+
+      <!-- Back to store + Logout -->
+      <div class="py-6 flex flex-col gap-0.5">
+        <a
+          routerLink="/"
+          class="flex items-center gap-3 px-3 py-2.5 text-sm font-montserrat text-neutral/70 hover:text-base-content hover:bg-base-200/40 transition-all duration-200 select-none"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          Back to Store
+        </a>
+        <button
+          class="flex items-center gap-3 px-3 py-2.5 text-sm font-montserrat text-neutral/70 hover:text-error hover:bg-error/5 transition-all duration-200 cursor-pointer select-none"
+          (click)="authService.logout()"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+          Logout
+        </button>
+      </div>
+
     </div>
   </div>
 </div>
+
+<!-- Global admin toast -->
+@if(toastService.toast(); as toast){
+  <div class="fixed bottom-6 right-6 z-[100] animate-fadeIn">
+    <div
+      class="flex items-center gap-2.5 px-5 py-3 text-sm font-montserrat select-none shadow-lg"
+      [class]="toast.type === 'success'
+        ? 'bg-base-content text-base-100'
+        : 'bg-error text-error-content'"
+    >
+      @if(toast.type === 'success'){
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      }@else {
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg>
+      }
+      {{ toast.message }}
+    </div>
+  </div>
+}

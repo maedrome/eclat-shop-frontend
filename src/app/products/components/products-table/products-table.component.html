@@ -1,61 +1,108 @@
 <div class="overflow-x-auto">
-  <table class="table">
+  <table class="w-full text-left">
     <thead>
-      <tr>
-        <th>
-          <label>
-            <input type="checkbox" class="checkbox" />
-          </label>
+      <tr class="border-b border-base-content/10">
+        <th class="py-3 pr-4 text-xs font-montserrat uppercase tracking-widest text-neutral/50 font-normal select-none">Product</th>
+        <th class="py-3 px-4 text-xs font-montserrat uppercase tracking-widest text-neutral/50 font-normal text-right select-none cursor-pointer whitespace-nowrap" (click)="toggleSort('price')">
+          Price
+          @if(sortColumn() === 'price'){
+            <span class="ml-1">{{ sortDirection() === 'ASC' ? '↑' : '↓' }}</span>
+          }
         </th>
-        <th>Title</th>
-        <th class="text-right">Price</th>
-        <th class="text-right">Stock</th>
-        <th></th>
+        <th class="py-3 px-4 text-xs font-montserrat uppercase tracking-widest text-neutral/50 font-normal text-right select-none cursor-pointer whitespace-nowrap" (click)="toggleSort('stock')">
+          Stock
+          @if(sortColumn() === 'stock'){
+            <span class="ml-1">{{ sortDirection() === 'ASC' ? '↑' : '↓' }}</span>
+          }
+        </th>
+        <th class="py-3 pl-4 text-xs font-montserrat uppercase tracking-widest text-neutral/50 font-normal text-right select-none w-16"></th>
+        @if(showDelete()){
+          <th class="py-3 pl-2 w-10"></th>
+        }
       </tr>
     </thead>
     <tbody>
-        @for(product of products(); track product.id){
-            <tr>
-                <th>
-                <label>
-                    <input type="checkbox" class="checkbox before:duration-150 before:delay-0" />
-                </label>
-                </th>
-                <td>
-                    <div class="flex items-center gap-3">
-                        <div class="avatar">
-                            <div class="mask mask-squircle h-12 w-12">
-                                <img
-                                [src]="product.images | productImage"
-                                [alt]="product.title" />
-                            </div>
-                        </div>
-                        <div>
-                            <a [routerLink]="[productRoute(), product.id]" class="font-bold transition-colors duration-150 hover:text-accent">{{product.title}}</a>
-                            <div class="text-sm opacity-50">{{product.sizes.join(', ')}}</div>
-                        </div>
-                    </div>
-                </td>
-                <td class="text-right">
-                    {{product.price | currency}}
-                </td>
-                <td>
-                    <div class="flex justify-end items-center">
-                        @if(product.stock <= 10){
-                            <span class="badge badge-error">{{product.stock}}</span>
-                        }@else if(product.stock <= 20){
-                            <span class="badge badge-warning">{{product.stock}}</span>
-                        }
-                        @else{
-                            <span class="badge">{{product.stock}}</span>
-                        }
-                    </div>
-                </td>
-                <th>
-                <button class="btn btn-ghost btn-sm" [routerLink]="[productRoute(),product.id]">Details</button>
-                </th>
-            </tr>
+      <!-- Skeleton rows -->
+      @if(isLoading()){
+        @for(row of [].constructor(skeletonRows()); track $index){
+          <tr class="border-b border-base-content/6">
+            <td class="py-3 pr-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 shrink-0 skeleton rounded-none"></div>
+                <div class="min-w-54 flex-1">
+                  <div class="skeleton rounded-none h-[14px] mb-1.5" [style.width]="(40 + ($index * 17) % 35) + '%'"></div>
+                  <div class="skeleton rounded-none h-[10px]" [style.width]="(20 + ($index * 13) % 25) + '%'"></div>
+                </div>
+              </div>
+            </td>
+            <td class="py-3 px-4 text-right">
+              <div class="skeleton rounded-none h-[14px] w-16 ml-auto"></div>
+            </td>
+            <td class="py-3 px-4 text-right">
+              <div class="skeleton rounded-none h-[22px] w-8 ml-auto"></div>
+            </td>
+            <td class="py-3 pl-4 text-right">
+              <div class="skeleton rounded-none h-[10px] w-8 ml-auto"></div>
+            </td>
+            @if(showDelete()){
+              <td class="py-3 pl-2 text-center">
+                <div class="skeleton rounded-none h-[17px] w-[17px] mx-auto"></div>
+              </td>
+            }
+          </tr>
         }
+      } @else {
+        <!-- Real rows -->
+        @for(product of products(); track product.id){
+          <tr class="border-b border-base-content/6 hover:bg-base-200/40 transition-colors duration-150">
+            <td class="py-3 pr-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-base-200 shrink-0 overflow-hidden">
+                  <img
+                    [src]="product.images | productImage"
+                    [alt]="product.title"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div class="min-w-0">
+                  <a [routerLink]="[productRoute(), product.id]" class="text-sm font-montserrat hover:text-accent transition-colors duration-200 truncate block">{{ product.title }}</a>
+                  <p class="text-xs text-neutral/40 truncate select-none">{{ product.sizes.join(', ') }}</p>
+                </div>
+              </div>
+            </td>
+            <td class="py-3 px-4 text-sm font-montserrat text-right whitespace-nowrap">
+              {{ product.price | currency }}
+            </td>
+            <td class="py-3 px-4 text-right">
+              <span
+                class="inline-flex items-center justify-center text-sm font-montserrat min-w-[2rem] px-2 py-0.5"
+                [class]="product.stock <= 10
+                  ? 'text-error bg-error/10'
+                  : product.stock <= 20
+                    ? 'text-warning bg-warning/10'
+                    : 'text-neutral/60 bg-base-200'"
+              >{{ product.stock }}</span>
+            </td>
+            <td class="py-3 pl-4 text-right">
+              <a
+                [routerLink]="[productRoute(), product.id]"
+                class="text-xs font-montserrat uppercase tracking-widest text-neutral/40 hover:text-accent transition-colors duration-200 select-none"
+              >Edit</a>
+            </td>
+            @if(showDelete()){
+              <td class="py-3 pl-2 text-center">
+                <button
+                  class="p-1.5 text-neutral/30 hover:text-error transition-colors duration-200 cursor-pointer"
+                  (click)="delete.emit(product)"
+                  title="Delete product"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                </button>
+              </td>
+            }
+          </tr>
+        }
+      }
     </tbody>
   </table>
 </div>

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { AuthResponse } from '@auth/interfaces/auth-response.interface';
 import { User } from '@auth/interfaces/user.interface';
@@ -23,6 +24,7 @@ export class AuthService {
   })
 
   private http = inject(HttpClient);
+  private router = inject(Router);
 
   authStatus = computed(() => {
     if( this._authStatus() == 'checking') return 'checking';
@@ -57,7 +59,9 @@ export class AuthService {
   checkStatus():Observable<boolean>{
     const token = localStorage.getItem('token');
     if(!token) {
-      this.logout();
+      this._user.set(null);
+      this._token.set(null);
+      this._authStatus.set('not-authenticated');
       return of(false);
     }
     return this.http.get<AuthResponse>(`${baseUrl}/auth/check-status`).pipe(
@@ -71,6 +75,7 @@ export class AuthService {
     this._token.set(null);
     this._authStatus.set('not-authenticated');
     localStorage.removeItem('token');
+    this.router.navigateByUrl('/auth/login');
   }
 
   private handleAuthSuccess(resp:AuthResponse){
@@ -84,7 +89,10 @@ export class AuthService {
   }
 
   private handleAuthError(error:any){
-    this.logout();
+    this._user.set(null);
+    this._token.set(null);
+    this._authStatus.set('not-authenticated');
+    localStorage.removeItem('token');
     return of(false)
   }
 

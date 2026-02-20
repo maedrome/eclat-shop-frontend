@@ -1,25 +1,77 @@
-
-@if(productResource.isLoading()){
-    <div class="flex justify-center items-center h-screen">
-        <span class="loading loading-spinner loading-lg"></span>
-    </div>
+@if (productResource.isLoading()) {
+  <div class="flex justify-center items-center min-h-screen">
+    <span class="loading loading-spinner loading-lg"></span>
+  </div>
 }
-@if (productResource.hasValue()){
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 mb-7">
-        <div class="lg:col-span-2">
-            <product-carousel [images]="productResource.value().images"></product-carousel>
+
+@if (productResource.hasValue()) {
+  <div class="pt-6 md:pt-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 lg:gap-14">
+
+      <!-- Images -->
+      <div>
+        <product-carousel [images]="productResource.value().images"></product-carousel>
+      </div>
+
+      <!-- Details -->
+      <div class="flex flex-col">
+        <!-- Product header -->
+        <div>
+          <h1 class="text-2xl md:text-3xl font-montserrat leading-snug select-none">{{ productResource.value().title }}</h1>
+          <span class="text-xl font-montserrat mt-2 block">{{ productResource.value().price | currency }}</span>
         </div>
-        <div class="lg:col-span-3 text-pretty">
-            <h2 class="text-3xl">{{productResource.value().title}}</h2>
-            <div class="divider"></div>
-            <div class="text-2xl font-montserrat mb-4">{{productResource.value().price | currency}}</div>
-            <div class="flex gap-2 mb-2 items-center flex-wrap">
-                <span class="font-semibold">Available Sizes:</span> 
-                @for(size of productResource.value().sizes; track size){
-                    <span class="badge">{{size}}</span>
-                }
+
+        <!-- Size Selector -->
+        <div class="mt-8">
+          <span class="text-xs font-montserrat uppercase tracking-widest text-neutral/60 mb-3 block select-none">Size</span>
+          <div class="flex gap-2 flex-wrap">
+            @for (size of productResource.value().sizes; track size) {
+              <button
+                class="min-w-[2.5rem] h-9 px-3 text-xs font-montserrat uppercase tracking-widest border transition-colors duration-200 cursor-pointer select-none"
+                [class]="selectedSize() === size
+                  ? 'bg-base-content text-base-100 border-base-content'
+                  : 'border-base-content/15 hover:border-base-content/40'"
+                (click)="selectSize(size)">
+                {{ size }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Quantity Selector -->
+        <div class="mt-7">
+          <span class="text-xs font-montserrat uppercase tracking-widest text-neutral/60 mb-3 block select-none">Quantity</span>
+          <div class="flex items-center gap-3">
+            <div class="inline-flex items-center border border-base-content/8">
+              <button
+                class="w-9 h-9 flex items-center justify-center text-sm hover:bg-base-200 transition-colors duration-200 cursor-pointer disabled:opacity-25 disabled:cursor-default select-none"
+                (click)="decrementQty()"
+                [disabled]="quantity() <= 1">&minus;</button>
+              <span class="w-10 h-9 flex items-center justify-center text-sm font-montserrat tabular-nums border-x border-base-content/8 select-none">{{ quantity() }}</span>
+              <button
+                class="w-9 h-9 flex items-center justify-center text-sm hover:bg-base-200 transition-colors duration-200 cursor-pointer disabled:opacity-25 disabled:cursor-default select-none"
+                (click)="incrementQty()"
+                [disabled]="quantity() >= productResource.value().stock">&plus;</button>
             </div>
-            <p>{{productResource.value().description}}</p>
+            <span class="text-xs text-neutral/50 font-montserrat select-none">{{ productResource.value().stock }} available</span>
+          </div>
         </div>
+
+        <!-- Add to Cart -->
+        <button
+          class="w-full md:w-auto md:min-w-[280px] text-sm font-montserrat uppercase tracking-widest py-3 mt-8 bg-base-content text-base-100 hover:bg-primary transition-colors duration-300 select-none cursor-pointer disabled:opacity-30 disabled:cursor-default"
+          [disabled]="!selectedSize() || productResource.value().stock < 1"
+          (click)="addToCart()">
+          Add to Bag
+        </button>
+
+        <!-- Description -->
+        <div class="mt-8 mb-2">
+          <span class="text-xs font-montserrat uppercase tracking-widest text-neutral/60 mb-3 block select-none">Details</span>
+          <p class="text-sm text-neutral/70 leading-relaxed text-pretty">{{ productResource.value().description }}</p>
+        </div>
+      </div>
+
     </div>
+  </div>
 }

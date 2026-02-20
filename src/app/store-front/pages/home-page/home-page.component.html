@@ -1,14 +1,37 @@
-<h1 class="text-3xl font-bold font-montserrat">Wear What You Love</h1>
-<h2 class="text-xl mb-5 text-secondary font-semibold">Styles for Every Taste</h2>
+<div class="pt-6 md:pt-10">
+  <h1 class="text-4xl md:text-5xl font-montserrat select-none leading-tight">Wear What You Love</h1>
+  <p class="text-neutral/60 md:text-lg mt-2 md:max-w-md select-none">Curated styles designed for comfort and confidence. Discover what's new.</p>
+</div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2 gap-3">
+@if(featuredProducts().length) {
+  <div class="mt-12 mb-6">
+    <h2 class="text-lg font-montserrat uppercase tracking-widest select-none">Our Picks</h2>
+  </div>
+  <featured-carousel [products]="featuredProducts()" />
+}
+
+<div>
+  <h2 class="text-lg font-montserrat uppercase tracking-widest select-none mb-6">Our Collection</h2>
+  <!-- <p class="text-neutral/60 mt-2 md:text-lg select-none">Fresh styles just in. Elevate your look.</p> -->
+</div>
+
+<div class="mb-8">
+  <product-filters
+    [availableTags]="availableTags()"
+    [selectedSizes]="selectedSizes()"
+    [selectedTags]="selectedTags()" />
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-8">
     @for(product of productsResource.value()?.products; track product.id){
         <product-card [product]="product"></product-card>
     }@empty {
-        <p>No products found.</p>
+        <div class="col-span-full text-center py-16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-neutral/25"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <p class="font-montserrat text-neutral/50">No products found.</p>
+        </div>
     }
 </div>
-<div class="my-7">
+<div class="mt-auto pt-10">
     <pagination [pages]="productsResource.value()?.pages ?? 0" [currentPage]="paginationService.pageQueryParam()"></pagination>
 </div>
-

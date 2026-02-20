@@ -1,0 +1,190 @@
+<div class="pt-6 md:pt-10">
+  <a
+    routerLink="/cart"
+    class="inline-flex items-center gap-1.5 text-xs font-montserrat uppercase tracking-widest text-neutral/50 hover:text-accent transition-colors duration-200 select-none"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    Back to Bag
+  </a>
+
+  <h1 class="text-4xl md:text-5xl font-montserrat select-none leading-tight mt-5">Checkout</h1>
+  <p class="text-neutral/60 md:text-lg mt-2 md:max-w-md select-none">You're almost there. Fill in your shipping details to complete your order.</p>
+</div>
+
+@if (cartService.cartItems().length === 0) {
+  <div class="flex flex-col items-center justify-center py-16 text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 15 15" class="mb-4 text-neutral/25"><path fill="currentColor" d="m2.401 6.39l-.497-.056zm-.778 7l.497.055zm11.754 0l-.497.055zm-.778-7l.497-.056zM1.904 6.334l-.778 7l.994.11l.778-7zM2.617 15h9.766v-1H2.617zm11.257-1.666l-.778-7l-.994.11l.778 7zM11.604 5H3.396v1h8.21zm1.492 1.334A1.5 1.5 0 0 0 11.605 5v1a.5.5 0 0 1 .497.445zM12.383 15a1.5 1.5 0 0 0 1.49-1.666l-.993.11a.5.5 0 0 1-.497.556zM1.126 13.334A1.5 1.5 0 0 0 2.617 15v-1a.5.5 0 0 1-.497-.555zm1.772-6.89A.5.5 0 0 1 3.395 6V5a1.5 1.5 0 0 0-1.49 1.334zM5 4v-.5H4V4zm5-.5V4h1v-.5zM7.5 1A2.5 2.5 0 0 1 10 3.5h1A3.5 3.5 0 0 0 7.5 0zM5 3.5A2.5 2.5 0 0 1 7.5 1V0A3.5 3.5 0 0 0 4 3.5z" stroke-width="0.1"/></svg>
+    <p class="font-montserrat text-lg select-none">Your bag is empty</p>
+    <p class="text-sm text-neutral/45 mt-1.5 max-w-[220px] select-none">Add some items to your bag before checking out.</p>
+    <a routerLink="/" class="inline-block text-sm font-montserrat uppercase tracking-widest bg-base-200 hover:bg-base-300 rounded-full py-2 px-5 mt-6 transition-colors duration-300 select-none">
+      Continue Shopping
+    </a>
+  </div>
+} @else {
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-14 mt-12">
+
+    <!-- Shipping Form -->
+    <div class="lg:col-span-3">
+      <h2 class="text-lg font-montserrat uppercase tracking-widest select-none mb-6">Shipping</h2>
+      <div class="space-y-5">
+        <div>
+          <label class="text-xs font-montserrat uppercase tracking-widest text-neutral/60 mb-1.5 block select-none">Address</label>
+          <input
+            type="text"
+            class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+            placeholder="Street address"
+            [(ngModel)]="shippingAddress"
+            required
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs font-montserrat uppercase tracking-widest text-neutral/60 mb-1.5 block select-none">City</label>
+            <input
+              type="text"
+              class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+              placeholder="City"
+              [(ngModel)]="shippingCity"
+              required
+            />
+          </div>
+          <div>
+            <label class="text-xs font-montserrat uppercase tracking-widest text-neutral/60 mb-1.5 block select-none">Postal Code</label>
+            <input
+              type="text"
+              class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+              placeholder="Postal code"
+              [(ngModel)]="shippingPostalCode"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs font-montserrat uppercase tracking-widest text-neutral/60 mb-1.5 block select-none">Country</label>
+            <input
+              type="text"
+              class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+              [(ngModel)]="shippingCountry"
+              required
+            />
+          </div>
+          <div>
+            <label class="text-xs font-montserrat uppercase tracking-widest text-neutral/60 mb-1.5 block select-none">Phone</label>
+            <input
+              type="tel"
+              class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+              placeholder="+593 999 999 999"
+              [(ngModel)]="shippingPhone"
+              required
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="lg:col-span-2">
+      <div class="lg:sticky lg:top-6">
+        <h2 class="text-lg font-montserrat uppercase tracking-widest select-none mb-6">Order Summary</h2>
+
+        <!-- Top scroll indicator -->
+        <div 
+          class="flex justify-start"
+          [style.paddingRight]="scrollbarTakesSpace() ? '0.6rem' : '0rem'">
+          <div
+            class="h-px w-full bg-base-content/10 transition-opacity duration-300"
+            [style.opacity]="canScrollUp() ? '1' : '0'">
+          </div>
+        </div>
+
+        <div
+          #itemsContainer
+          class="max-h-66 overflow-y-auto [scrollbar-width:thin] [scrollbar-color:var(--color-base-300)_transparent]"
+          (scroll)="checkScroll()">
+          <div class="space-y-4 py-1">
+            @for (item of cartService.cartItems(); track item.id) {
+              <div class="flex gap-3 items-center">
+                <a [routerLink]="['/product', item.product.slug]" class="shrink-0 block overflow-hidden">
+                  <img
+                    [src]="item.product.images | productImage"
+                    [alt]="item.product.title"
+                    class="w-12 h-15 object-cover shrink-0 bg-base-200"
+                  />
+                </a>
+                <div class="flex-1 min-w-0">
+                  <a [routerLink]="['/product', item.product.slug]" class="font-montserrat text-sm truncate block hover:text-accent transition-colors duration-300">{{ item.product.title }}</a>
+                  <p class="text-xs text-neutral/50 font-montserrat uppercase tracking-wider select-none">{{ item.size }} &times; {{ item.quantity }}</p>
+                </div>
+                <span class="text-sm font-montserrat shrink-0">
+                  {{ item.product.price * item.quantity | currency }}
+                </span>
+              </div>
+              @if (!$last) {
+                <div class="border-b border-base-content/8"></div>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Bottom scroll indicator -->
+        <div 
+          class="flex justify-end"
+          [style.paddingRight]="scrollbarTakesSpace() ? '0.6rem' : '0rem'">
+          <div
+            class="h-px w-full bg-base-content/10 transition-opacity duration-300"
+            [style.opacity]="canScrollDown() ? '1' : '0'">
+          </div>
+        </div>
+
+        <div class="border-b border-base-300 my-5"></div>
+
+        <div class="space-y-3">
+          <div class="flex justify-between text-sm">
+            <span class="text-neutral/60">Subtotal ({{ cartService.cartItemCount() }} items)</span>
+            <span class="font-montserrat">{{ cartService.cartTotal() | currency }}</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-neutral/60">Shipping</span>
+            <span class="text-success font-montserrat text-xs uppercase tracking-wider">Free</span>
+          </div>
+
+          <div class="border-b border-base-300 my-4"></div>
+
+          <div class="flex justify-between items-baseline">
+            <span class="text-sm font-montserrat text-neutral/60">Total</span>
+            <span class="font-montserrat text-xl">{{ cartService.cartTotal() | currency }}</span>
+          </div>
+        </div>
+
+        @if (errorMessage()) {
+          <div class="mt-4 px-4 py-3 border border-error/30 text-error text-sm">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        <button
+          class="w-full text-center text-sm font-montserrat uppercase tracking-widest py-3 mt-8 bg-base-content text-base-100 hover:bg-primary transition-colors duration-300 disabled:opacity-40 cursor-pointer disabled:cursor-default select-none"
+          [disabled]="!isFormValid || isSubmitting()"
+          (click)="placeOrder()"
+        >
+          @if (isSubmitting()) {
+            <span class="inline-flex items-center gap-2">
+              <span class="loading loading-spinner loading-sm"></span>
+              Processing...
+            </span>
+          } @else {
+            Pay with PayPhone
+          }
+        </button>
+
+        <p class="text-xs text-center text-neutral/40 mt-2.5 select-none">
+          You will be redirected to PayPhone to complete your payment securely.
+        </p>
+
+      </div>
+    </div>
+  </div>
+}

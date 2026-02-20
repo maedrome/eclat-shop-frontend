@@ -10,6 +10,10 @@ interface Options {
   limit?: number;
   offset?: number;
   gender?: string;
+  size?: string;
+  tag?: string;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
 }
 
 @Injectable({
@@ -33,24 +37,34 @@ export class ProductsService {
   private queryCacheProducts = new Map<string,ProductsResponse>();
   private queryCacheProduct = new Map<string, Product>();
   getProducts(options:Options) : Observable<ProductsResponse> {
-    const { limit = 12, offset = 0, gender = '' } = options;
+    const { limit = 12, offset = 0, gender = '', size = '', tag = '', sortBy = '', sortOrder = 'ASC' } = options;
     const stringOptions = JSON.stringify(options);
     if(this.queryCacheProducts.has(stringOptions)){
       return of(this.queryCacheProducts.get(stringOptions)!)
     }
-    return this.http.get<ProductsResponse>(`${baseUrl}/products`,{
-      params: {
-        limit: limit,
-        offset: offset*limit,
-        gender: gender
-      }
-    })
+    const params: Record<string, string | number> = {
+      limit: limit,
+      offset: offset*limit,
+      gender: gender,
+    };
+    if (size) params['size'] = size;
+    if (tag) params['tag'] = tag;
+    if (sortBy) {
+      params['sortBy'] = sortBy;
+      params['sortOrder'] = sortOrder;
+    }
+
+    return this.http.get<ProductsResponse>(`${baseUrl}/products`,{ params })
     .pipe(
       tap((resp) => {
         console.log(resp);
         this.queryCacheProducts.set(stringOptions,resp)
       })
     )
+  }
+
+  getAvailableTags(): Observable<string[]> {
+    return this.http.get<string[]>(`${baseUrl}/products/tags`);
   }
 
   getProduct = (slug:string): Observable<Product> => {
@@ -93,18 +107,7 @@ export class ProductsService {
 
   updateProductCache = (product: Product) => {
     this.queryCacheProduct.set(product.id, product);
-    // this.queryCacheProducts.forEach(
-    //   res => {
-    //     res.products.forEach((cacheProduct,index) => {
-    //       if(cacheProduct.id==product.id){
-    //         res.products[index]=product
-    //       } 
-    //     })
-    // })
-
-    this.queryCacheProducts.forEach(res => {
-      res.products = res.products.map(currentProduct => currentProduct.id==product.id ? product : currentProduct)
-    })
+    this.queryCacheProducts.clear();
   }
 
   uploadImages = (images?:FileList): Observable<string[]> => {
@@ -117,5 +120,14 @@ export class ProductsService {
     const formData = new FormData();
     formData.append('file',imageFile);
     return this.http.post<{fileName : string}>(`${baseUrl}/files/product`,formData).pipe(map(resp => resp.fileName))
+  }
+
+  deleteProduct = (id: string): Observable<void> => {
+    return this.http.delete<void>(`${baseUrl}/products/${id}`).pipe(
+      tap(() => {
+        this.queryCacheProduct.delete(id);
+        this.queryCacheProducts.clear();
+      })
+    );
   }
 }

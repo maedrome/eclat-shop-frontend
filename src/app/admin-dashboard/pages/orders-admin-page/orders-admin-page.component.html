@@ -1,0 +1,155 @@
+<!-- Header -->
+<h1 class="text-4xl md:text-5xl font-montserrat select-none leading-tight mb-8 mt-4">Orders
+    <span class="text-neutral/50 text-sm normal-case tracking-normal font-normal">
+        @if(ordersResource.isLoading()){
+            <span class="loading loading-dots loading-xs">&nbsp;</span>
+        }
+        @if(ordersResource.hasValue()){
+            <span>&nbsp;( {{ ordersResource.value()!.count }} )</span>
+        }
+    </span>
+</h1>
+
+<!-- Filters -->
+<div class="flex items-end justify-between mb-8">
+    <!-- Mobile: select -->
+    <div class="flex flex-col gap-1 md:hidden">
+        <label class="text-xs font-montserrat uppercase tracking-widest text-neutral/50 select-none">Status</label>
+        <div class="relative">
+            <select
+                [value]="statusFilter()"
+                class="appearance-none border border-base-content/15 bg-transparent pl-3 pr-7.5 py-[calc(0.25rem_*_1.75)] text-sm font-montserrat uppercase tracking-widest focus:border-base-content focus:outline-none transition-colors duration-300 cursor-pointer"
+                #selectStatus
+                (change)="onStatusFilter(selectStatus.value)"
+            >
+                <option value="">All</option>
+                @for(status of statuses; track status){
+                    <option [value]="status">{{ status }}</option>
+                }
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-neutral/50"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+    </div>
+    <!-- Desktop: buttons -->
+    <div class="hidden md:flex items-center gap-1.5">
+        <button
+            class="min-w-[2.5rem] h-9 px-3 text-xs font-montserrat uppercase tracking-widest border transition-colors duration-200 cursor-pointer select-none"
+            [class]="statusFilter() === '' ? 'bg-base-content text-base-100 border-base-content' : 'border-base-content/15 hover:border-base-content/40'"
+            (click)="onStatusFilter('')"
+        >All</button>
+        @for(status of statuses; track status){
+            <button
+                class="h-9 px-3 text-xs font-montserrat uppercase tracking-widest border transition-colors duration-200 cursor-pointer select-none"
+                [class]="statusFilter() === status ? 'bg-base-content text-base-100 border-base-content' : 'border-base-content/15 hover:border-base-content/40'"
+                (click)="onStatusFilter(status)"
+            >{{ status }}</button>
+        }
+    </div>
+    <div class="flex flex-col items-end gap-1">
+        <label class="text-xs font-montserrat uppercase tracking-widest text-neutral/50 select-none">Per page</label>
+        <div class="relative">
+            <select
+                [value]="paginationService.showPerPage()"
+                [disabled]="ordersResource.isLoading()"
+                class="appearance-none border border-base-content/15 bg-transparent pl-3 pr-7.5 py-[calc(0.25rem_*_1.75)] text-sm font-montserrat focus:border-base-content focus:outline-none transition-colors duration-300 cursor-pointer"
+                #selectPerPage
+                (change)="onLimitChange(+selectPerPage.value)"
+            >
+                <option value=10>10</option>
+                <option value=20>20</option>
+                <option value=50>50</option>
+                <option value=100>100</option>
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-neutral/50"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="overflow-x-auto">
+    <table class="w-full text-left">
+        <thead>
+            <tr class="border-b border-base-content/10">
+                <th class="py-3 pr-4 text-xs font-montserrat uppercase tracking-widest text-neutral/50 font-normal select-none">Order</th>
+                <th class="py-3 px-4 text-xs font-montserrat uppercase tracking-widest text-neutral/50 font-normal select-none">Customer</th>
+                <th class="py-3 px-4 text-xs font-montserrat uppercase tracking-widest text-neutral/50 font-normal select-none">Date</th>
+                <th class="py-3 px-4 text-xs font-montserrat uppercase tracking-widest text-neutral/50 font-normal text-center select-none">Status</th>
+                <th class="py-3 px-4 text-xs font-montserrat uppercase tracking-widest text-neutral/50 font-normal text-right select-none">Items</th>
+                <th class="py-3 pl-4 text-xs font-montserrat uppercase tracking-widest text-neutral/50 font-normal text-right select-none">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(ordersResource.isLoading()){
+                @for(row of [].constructor(productsPerPage()); track $index){
+                    <tr class="border-b border-base-content/6">
+                        <td class="py-3 pr-4"><div class="skeleton rounded-none h-[14px] w-20"></div></td>
+                        <td class="py-3 px-4">
+                            <div class="skeleton rounded-none h-[14px] mb-1.5" [style.width]="(50 + ($index * 17) % 30) + '%'"></div>
+                            <div class="skeleton rounded-none h-[10px]" [style.width]="(40 + ($index * 13) % 25) + '%'"></div>
+                        </td>
+                        <td class="py-3 px-4"><div class="skeleton rounded-none h-[14px] w-24"></div></td>
+                        <td class="py-3 px-4 text-center"><div class="skeleton rounded-none h-[22px] w-16 mx-auto"></div></td>
+                        <td class="py-3 px-4 text-right"><div class="skeleton rounded-none h-[14px] w-6 ml-auto"></div></td>
+                        <td class="py-3 pl-4 text-right"><div class="skeleton rounded-none h-[14px] w-16 ml-auto"></div></td>
+                    </tr>
+                }
+            } @else {
+                @for(order of ordersResource.value()?.orders ?? []; track order.id){
+                    <tr class="border-b border-base-content/6 hover:bg-base-200/40 transition-colors duration-150">
+                        <td class="py-3 pr-4">
+                            <a [routerLink]="['/admin/orders', order.id]" class="font-mono text-sm text-neutral/70 hover:text-accent transition-colors duration-200">
+                                {{ order.id | slice:0:8 }}…
+                            </a>
+                        </td>
+                        <td class="py-3 px-4">
+                            <p class="text-sm font-montserrat truncate max-w-[200px]">{{ order.user.fullName }}</p>
+                            <p class="text-xs text-neutral/45 truncate max-w-[200px] select-none">{{ order.user.email }}</p>
+                        </td>
+                        <td class="py-3 px-4 text-sm font-montserrat whitespace-nowrap">
+                            {{ order.createdAt | date:'mediumDate' }}
+                        </td>
+                        <td class="py-3 px-4 text-center">
+                            <span
+                                class="inline-flex items-center justify-center text-xs font-montserrat uppercase tracking-widest px-2.5 py-0.5"
+                                [class]="getStatusClass(order.status)"
+                            >{{ order.status }}</span>
+                        </td>
+                        <td class="py-3 px-4 text-sm font-montserrat text-right">
+                            {{ order.totalItems }}
+                        </td>
+                        <td class="py-3 pl-4 text-sm font-montserrat text-right whitespace-nowrap">
+                            {{ order.totalAmount | currency }}
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Empty state -->
+@if(ordersResource.hasValue() && ordersResource.value()!.orders.length === 0){
+    <div class="flex flex-col items-center justify-center py-16 text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mb-4 text-neutral/25">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
+            <path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>
+        </svg>
+        <p class="font-montserrat text-lg select-none">No orders found</p>
+        <p class="text-sm text-neutral/45 mt-1.5 select-none">
+            @if(statusFilter()){
+                No {{ statusFilter() }} orders at the moment.
+            } @else {
+                No orders have been placed yet.
+            }
+        </p>
+    </div>
+}
+
+<!-- Pagination -->
+<div class="flex w-fit items-end mx-auto mt-10">
+    <pagination
+        [pages]="paginationService.pages()"
+        [currentPage]="paginationService.pageQueryParam()">
+    </pagination>
+</div>

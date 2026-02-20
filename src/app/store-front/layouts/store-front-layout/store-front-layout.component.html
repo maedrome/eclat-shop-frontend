@@ -1,6 +1,25 @@
-<section class="shadow-sm">
-    <front-navbar></front-navbar>
-</section>
-<section class="max-w-7xl xl:max-w-[1669px] mx-auto px-4 lg:px-8 w-full mt-7">
-    <router-outlet></router-outlet>
-</section>
+<div class="drawer drawer-end ![scrollbar-gutter:stable]">
+  <input
+    id="cart-drawer"
+    type="checkbox"
+    class="drawer-toggle"
+    [checked]="cartService.sidebarOpen()"
+    (change)="cartService.toggleSidebar()"
+  />
+
+  <div id="store-front-drawer" class="drawer-content">
+    <section>
+        <front-navbar></front-navbar>
+    </section>
+    <section class="max-w-7xl xl:max-w-[1669px] mx-auto px-4 lg:px-8 w-full pb-7 pt-2 flex flex-col min-h-[calc(100dvh-64px)]">
+        <router-outlet></router-outlet>
+    </section>
+  </div>
+
+  <div class="drawer-side z-50">
+    <label for="cart-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+    <div class="bg-base-100 h-full w-80 sm:w-96">
+      <cart-sidebar />
+    </div>
+  </div>
+</div>

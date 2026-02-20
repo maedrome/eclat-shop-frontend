@@ -1,0 +1,35 @@
+<span class="text-xs font-montserrat uppercase tracking-widest text-neutral/60 mb-3 block select-none">Filters</span>
+
+<div class="flex gap-2 flex-wrap">
+  @for (size of allSizes; track size) {
+    <button
+      class="min-w-[2.5rem] h-9 px-3 text-xs font-montserrat uppercase tracking-widest border transition-colors duration-200 cursor-pointer select-none"
+      [class]="activeSizeSet().has(size)
+        ? 'bg-base-content text-base-100 border-base-content'
+        : 'border-base-content/15 hover:border-base-content/40'"
+      (click)="toggleSize(size)">
+      {{ size }}
+    </button>
+  }
+</div>
+
+@if (availableTags().length) {
+  <div class="mt-3 -mx-1">
+    <div class="swiper" #swiperTags>
+      <div class="swiper-wrapper">
+        @for (tag of availableTags(); track tag) {
+          <div class="swiper-slide !w-auto">
+            <button
+              class="h-9 px-3.5 text-xs font-montserrat uppercase tracking-widest border transition-colors duration-200 cursor-pointer select-none whitespace-nowrap mx-1"
+              [class]="activeTagSet().has(tag)
+                ? 'bg-base-content text-base-100 border-base-content'
+                : 'border-base-content/15 hover:border-base-content/40'"
+              (click)="toggleTag(tag)">
+              {{ tag }}
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

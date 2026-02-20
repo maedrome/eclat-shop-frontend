@@ -1,0 +1,44 @@
+<div class="flex gap-4">
+  <a [routerLink]="['/product', item().product.slug]" (click)="onNavigate()" class="shrink-0 block overflow-hidden">
+    <img
+      [src]="item().product.images | productImage"
+      [alt]="item().product.title"
+      [class]="compact()
+        ? 'w-20 h-26 object-cover bg-base-200'
+        : 'w-24 h-30 md:w-28 md:h-36 object-cover bg-base-200 transition-transform duration-300 hover:scale-105'"
+    />
+  </a>
+  <div class="flex-1 min-w-0 flex flex-col">
+    <div class="flex items-start justify-between gap-2">
+      <div class="min-w-0">
+        <a [routerLink]="['/product', item().product.slug]" (click)="onNavigate()"
+           [class]="compact()
+             ? 'font-montserrat text-sm leading-snug line-clamp-2 hover:text-accent transition-colors duration-300'
+             : 'font-montserrat text-sm md:text-base leading-snug line-clamp-2 hover:text-accent transition-colors duration-300'">
+          {{ item().product.title }}
+        </a>
+        <p class="text-xs text-neutral/50 mt-1 font-montserrat uppercase tracking-wider select-none">Size: {{ item().size }}</p>
+      </div>
+      <button
+        class="p-2 -mr-2 -mt-2 shrink-0 text-neutral/20 hover:text-error transition-colors duration-200 cursor-pointer"
+        (click)="onRemove()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="flex items-center justify-between mt-auto pt-3">
+      <div class="inline-flex items-center border border-base-content/8">
+        <button
+          class="w-7 h-7 flex items-center justify-center text-sm hover:bg-base-200 transition-colors duration-200 cursor-pointer disabled:opacity-25 disabled:cursor-default"
+          (click)="decrement()"
+          [disabled]="item().quantity <= 1">&minus;</button>
+        <span class="w-8 h-7 flex items-center justify-center text-xs font-montserrat tabular-nums border-x border-base-content/8 select-none">{{ item().quantity }}</span>
+        <button
+          class="w-7 h-7 flex items-center justify-center text-sm hover:bg-base-200 transition-colors duration-200 cursor-pointer disabled:opacity-25 disabled:cursor-default"
+          (click)="increment()"
+          [disabled]="item().quantity >= item().product.stock">&plus;</button>
+      </div>
+      <span class="font-montserrat text-sm mr-0.5">{{ lineTotal | currency }}</span>
+    </div>
+  </div>
+</div>

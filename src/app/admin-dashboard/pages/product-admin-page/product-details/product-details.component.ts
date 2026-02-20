@@ -6,17 +6,19 @@ import { FormUtils } from '@utils/form-utils';
 import { I18nSelectPipe, TitleCasePipe } from '@angular/common';
 import { FormErrorLabelComponent } from "../../../../shared/components/form-error-label/form-error-label.component";
 import { ProductsService } from '@products/services/products.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AdminToastService } from '@admin-dashboard/services/admin-toast.service';
 
 
 @Component({
   selector: 'product-details',
-  imports: [ProductCarouselComponent, ReactiveFormsModule, TitleCasePipe, I18nSelectPipe, FormErrorLabelComponent],
+  imports: [ProductCarouselComponent, ReactiveFormsModule, TitleCasePipe, I18nSelectPipe, FormErrorLabelComponent, RouterLink],
   templateUrl: './product-details.component.html',
 })
-export class ProductDetailsComponent { 
+export class ProductDetailsComponent {
   product = input.required<Product>();
   productService = inject(ProductsService);
+  toastService = inject(AdminToastService);
   sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   genders = ['men', 'women', 'kid', 'unisex'];
   genderMap = {
@@ -25,7 +27,6 @@ export class ProductDetailsComponent {
     'kid': 'kids',
     'unisex': 'unisex'
   };
-  wasSaved = signal(false);
   imageFileList : FileList|undefined = undefined;
   tempImages = signal<string[]>([]);
   imagesToCarousel = computed(() => {
@@ -83,15 +84,12 @@ export class ProductDetailsComponent {
     if(this.product().id == 'new'){
       this.productService.createProduct(productLike, this.imageFileList).subscribe(product => {
         this.router.navigate(['/admin/products/',product.id]);
-        this.wasSaved.set(true);
-        setTimeout(()=>{this.wasSaved.set(false)},3000)
+        this.toastService.show('Product created successfully');
       })
     }else {
-      this.productService.updateProduct(this.product().id,productLike,this.imageFileList).subscribe(product => console.log(product));
-      this.wasSaved.set(true);
-      setTimeout(()=>{this.wasSaved.set(false)},3000)
-      // this.productForm.reset();
-      // this.productForm.patchValue({sizes:[]})
+      this.productService.updateProduct(this.product().id,productLike,this.imageFileList).subscribe(() => {
+        this.toastService.show('Product updated successfully');
+      });
     }
   }
   onFilesChanged = (event:Event) => {

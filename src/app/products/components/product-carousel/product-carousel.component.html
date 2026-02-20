@@ -1,14 +1,25 @@
-<div class="relative h-full flex flex-col-reverse sm:flex-row items-center gap-2 animate-fadeIn">
-    <div class="relative sm:min-w-[50px] max-sm:px-4 sm:py-4 overflow-hidden after:absolute after:w-full after:h-full after:top-0 after:left-0 after:pointer-events-none sm:after:bg-linear-[white,transparent_7%,transparent_93%,white] max-sm:after:bg-linear-[90deg,white,transparent_7%,transparent_93%,white] after:z-1">
-        <div class="swiper max-w-[175px]! sm:w-[50px] sm:max-h-[215px]! overflow-visible!" [class]="{'hidden!': images().length < 1}" #swiperThumbDiv thumbsSlider="">
-            <div class="swiper-wrapper sm:justify-center items-center gap-1">
-                @for(image of images(); track image){
-                    <div class="swiper-slide w-[40px]! h-[50px]! overflow-hidden border-[0.5px] border-gray-500 border-solid rounded-lg cursor-pointer">
-                        <img [src]="image | productImage" class="block w-full h-full object-cover">
-                    </div>
-                }
+<div class="relative h-full flex flex-col-reverse sm:flex-row items-center gap-1.5 animate-fadeIn">
+    <div class="relative sm:min-w-[50px] flex max-sm:flex-row sm:flex-col items-center gap-1">
+        <!-- Prev arrow -->
+        <button class="thumb-nav shrink-0 flex items-center justify-center cursor-pointer text-base-content/70 hover:text-base-content transition-colors duration-200" #thumbPrev>
+            <svg class="w-5 h-5 max-sm:-rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+        </button>
+        <!-- Thumbs swiper -->
+        <div class="overflow-hidden">
+            <div class="swiper max-w-[216px]! sm:w-[50px]! sm:max-h-[216px]! overflow-visible!" [class]="{'hidden!': images().length < 1}" #swiperThumbDiv thumbsSlider="">
+                <div class="swiper-wrapper sm:justify-center items-center gap-1">
+                    @for(image of images(); track image){
+                        <div class="swiper-slide w-[50px]! h-[50px]! overflow-hidden border border-base-content/10 cursor-pointer transition-colors duration-200">
+                            <img [src]="image | productImage" class="block w-full h-full object-cover">
+                        </div>
+                    }
+                </div>
             </div>
         </div>
+        <!-- Next arrow -->
+        <button class="thumb-nav shrink-0 flex items-center justify-center cursor-pointer text-base-content/70 hover:text-base-content transition-colors duration-200" #thumbNext>
+            <svg class="w-5 h-5 max-sm:-rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
     </div>
     <div class="swiper w-full!" #swiperDiv>
         <div class="swiper-wrapper">
@@ -22,16 +33,5 @@
                 </div>
             }
         </div>
-        <div class="swiper-button-next after:!hidden w-1/12!">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6! h-10!" viewBox="7 7 10 10">
-	            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M9 6s6 4.419 6 6s-6 6-6 6" />
-            </svg>
-        </div>
-        <div class="swiper-button-prev after:!hidden w-1/12!">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6! h-10!" viewBox="7 7 10 10">
-	            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M15 6s-6 4.419-6 6s6 6 6 6" />
-            </svg>
-        </div>
     </div>
 </div>
-

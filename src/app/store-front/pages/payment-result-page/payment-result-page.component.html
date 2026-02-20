@@ -1,0 +1,74 @@
+@if (isLoading()) {
+    <div class="flex flex-col items-center justify-center py-24 md:py-32 animate-fadeIn">
+        <span class="loading loading-spinner loading-lg"></span>
+        <p class="text-sm text-neutral/60 font-montserrat mt-4 select-none">Verifying your payment...</p>
+    </div>
+}
+
+@if (!isLoading() && isSuccess()) {
+    <div class="flex flex-col items-center justify-center py-16 md:py-24 text-center animate-fadeIn">
+
+        <!-- Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-success mb-6">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/>
+        </svg>
+
+        <h1 class="text-3xl md:text-4xl font-montserrat select-none">Payment Successful</h1>
+        <p class="text-sm text-neutral/60 mt-2 max-w-[300px] select-none">Thank you for your purchase. Your order has been confirmed.</p>
+
+        @if (order()) {
+            <div class="w-full max-w-xs mt-8 border border-base-content/15 text-left">
+                <div class="px-5 py-4 space-y-3">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-neutral/50 select-none">Order</span>
+                        <span class="font-mono text-xs">{{ order()!.id | slice:0:8 }}…</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-neutral/50 select-none">Items</span>
+                        <span class="font-montserrat">{{ order()!.totalItems }}</span>
+                    </div>
+                    <div class="border-b border-base-content/8"></div>
+                    <div class="flex justify-between items-baseline">
+                        <span class="text-sm text-neutral/50 select-none">Total</span>
+                        <span class="font-montserrat text-lg">{{ order()!.totalAmount | currency }}</span>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="flex flex-col gap-3 mt-8">
+            <a
+                routerLink="/"
+                class="text-sm font-montserrat uppercase tracking-widest bg-base-content text-base-100 hover:bg-primary py-2.5 px-6 transition-colors duration-300 select-none text-center"
+            >Continue Shopping</a>
+            <a
+                routerLink="/orders"
+                class="text-sm font-montserrat uppercase tracking-widest text-neutral/60 hover:text-accent underline underline-offset-4 decoration-neutral/25 hover:decoration-accent py-2.5 px-2 transition-colors duration-200 select-none text-center"
+            >View My Orders</a>
+        </div>
+    </div>
+}
+
+@if (!isLoading() && !isSuccess()) {
+    <div class="flex flex-col items-center justify-center py-16 md:py-24 text-center animate-fadeIn">
+
+        <!-- Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-error/40 mb-6">
+            <circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+        </svg>
+
+        <h1 class="text-3xl md:text-4xl font-montserrat select-none">Payment Failed</h1>
+        <p class="text-sm text-neutral/60 mt-2 max-w-[300px] select-none">{{ errorMessage() }}</p>
+
+        <div class="flex flex-col sm:flex-row gap-3 mt-8">
+            <a
+                routerLink="/cart"
+                class="text-sm font-montserrat uppercase tracking-widest bg-base-content text-base-100 hover:bg-primary py-2.5 px-6 transition-colors duration-300 select-none text-center"
+            >Back to Cart</a>
+            <a
+                routerLink="/"
+                class="text-sm font-montserrat uppercase tracking-widest text-neutral/60 hover:text-accent underline underline-offset-4 decoration-neutral/25 hover:decoration-accent py-2.5 px-2 transition-colors duration-200 select-none text-center"
+            >Continue Shopping</a>
+        </div>
+    </div>
+}

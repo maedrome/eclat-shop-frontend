@@ -1,21 +1,24 @@
-<div class="card bg-base-100 shadow-sm animate-fadeIn">
-    <a [routerLink]="['/product',product().slug]">
-        <figure>
-            <img
-              [src]="product().images | productImage"
-              [alt]="product().title" />
-          </figure>
+<div class="animate-fadeIn">
+    <a [routerLink]="['/product', product().slug]" class="block overflow-hidden">
+        <img
+          class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105"
+          [src]="product().images | productImage"
+          [alt]="product().title" />
     </a>
-    <div class="card-body">
-      <h2 class="card-title">
-        <a class="hover:underline" [routerLink]="['/product',product().slug]">{{product().title}}</a>
-        @for(tag of product().tags; track tag){
-          <div class="badge badge-secondary">{{tag | titlecase}}</div>
-        }
-      </h2>
-      <p>{{product().description | slice:0:120 }} ...</p>
-      <div class="card-actions justify-end">
-        <button class="btn btn-primary">Add To Cart</button>
+    <div class="mt-3">
+      <div class="flex items-center justify-between gap-2">
+        <a class="font-montserrat text-lg line-clamp-1 hover:text-accent transition-colors duration-300" [routerLink]="['/product', product().slug]">
+          {{product().title}}
+        </a>
+        <div class="flex gap-1.5 shrink-0">
+          @for(tag of product().tags | slice:0:3; track tag){
+            <span class="text-xs px-2 py-0.5 border border-base-300 rounded-xs font-montserrat">{{tag | titlecase}}</span>
+          }
+        </div>
+      </div>
+      <div class="flex items-center justify-between mt-1">
+        <span class="font-montserrat text-lg">${{product().price.toFixed(2)}}</span>
+        <a [routerLink]="['/product', product().slug]" class="underline hover:text-accent transition-colors duration-300">Add To Bag</a>
       </div>
     </div>
 </div>
