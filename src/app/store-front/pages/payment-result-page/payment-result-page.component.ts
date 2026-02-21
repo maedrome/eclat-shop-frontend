@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CurrencyPipe, SlicePipe } from '@angular/common';
 import { OrdersService } from '@cart/services/orders.service';
+import { CartService } from '@cart/services/cart.service';
 import { Order } from '@cart/interfaces/order.interface';
 
 @Component({
@@ -14,6 +15,7 @@ export default class PaymentResultPageComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private ordersService = inject(OrdersService);
+  private cartService = inject(CartService);
 
   isLoading = signal(true);
   isSuccess = signal(false);
@@ -38,6 +40,7 @@ export default class PaymentResultPageComponent implements OnInit {
           this.isLoading.set(false);
           this.isSuccess.set(true);
           this.order.set(order);
+          this.cartService.clearCart();
         },
         error: (err) => {
           this.isLoading.set(false);
