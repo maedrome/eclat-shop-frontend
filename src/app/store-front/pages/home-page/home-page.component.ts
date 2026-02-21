@@ -1,4 +1,4 @@
-import { Component, computed, effect, ElementRef, inject, viewChild } from '@angular/core';
+import { afterNextRender, Component, computed, effect, ElementRef, inject, Injector, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal, rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -20,16 +20,27 @@ export default class HomePageComponent {
   productsService = inject(ProductsService);
   paginationService = inject(PaginationService);
   private activatedRoute = inject(ActivatedRoute);
+  private injector = inject(Injector);
 
   private filtersRef = viewChild<ProductFiltersComponent, ElementRef<HTMLElement>>(
     'filtersRef', { read: ElementRef }
   );
 
+  private isFirstLoad = true;
+
   private scrollOnPageChange = effect(() => {
-    const page = this.paginationService.pageQueryParam();
+    this.paginationService.pageQueryParam();
     const el = this.filtersRef()?.nativeElement;
-    if (page > 1 && el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    if (this.isFirstLoad) {
+      this.isFirstLoad = false;
+      return;
+    }
+
+    if (el) {
+      afterNextRender(() => {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, { injector: this.injector });
     }
   });
 
