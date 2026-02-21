@@ -20,7 +20,7 @@
       <input
         type="text"
         placeholder="Product title"
-        class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+        class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-base md:text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
         formControlName="title"
       />
       <form-error-label [control]="productForm.get('title')!"></form-error-label>
@@ -31,7 +31,7 @@
       <input
         type="text"
         placeholder="product-slug"
-        class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+        class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-base md:text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
         formControlName="slug"
       />
       <form-error-label [control]="productForm.get('slug')!"></form-error-label>
@@ -42,7 +42,7 @@
       <textarea
         placeholder="Product description"
         rows="5"
-        class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30 resize-none [scrollbar-width:thin] [scrollbar-color:var(--color-base-300)_transparent]"
+        class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-base md:text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30 resize-none [scrollbar-width:thin] [scrollbar-color:var(--color-base-300)_transparent]"
         formControlName="description"
       ></textarea>
       <form-error-label [control]="productForm.get('description')!"></form-error-label>
@@ -56,7 +56,7 @@
         <input
           type="number"
           placeholder="0.00"
-          class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+          class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-base md:text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
           formControlName="price"
         />
         <form-error-label [control]="productForm.get('price')!"></form-error-label>
@@ -66,7 +66,7 @@
         <input
           type="number"
           placeholder="0"
-          class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+          class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-base md:text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
           formControlName="stock"
         />
         <form-error-label [control]="productForm.get('stock')!"></form-error-label>
@@ -78,7 +78,7 @@
       <input
         type="text"
         placeholder="shirt, cotton, summer"
-        class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+        class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-base md:text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
         formControlName="tags"
       />
       <form-error-label [control]="productForm.get('tags')!"></form-error-label>

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -29,6 +29,18 @@ export default class GenderPageComponent {
   productsService = inject(ProductsService);
   activatedRoute = inject(ActivatedRoute);
   paginationService = inject(PaginationService);
+
+  private filtersRef = viewChild<ProductFiltersComponent, ElementRef<HTMLElement>>(
+    'filtersRef', { read: ElementRef }
+  );
+
+  private scrollOnPageChange = effect(() => {
+    const page = this.paginationService.pageQueryParam();
+    const el = this.filtersRef()?.nativeElement;
+    if (page > 1 && el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
 
   genderParam = this.activatedRoute.params.pipe(map(({ gender }) => gender));
   gender = toSignal(this.genderParam);

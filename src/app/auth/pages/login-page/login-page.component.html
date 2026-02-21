@@ -15,7 +15,7 @@
       formControlName="email"
       autocomplete="email"
       placeholder="you&#64;example.com"
-      class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+      class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-base md:text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
     />
     @if (isValidField('email')) {
       <p class="text-error text-xs mt-1">{{ getFieldError('email') }}</p>
@@ -32,7 +32,7 @@
       formControlName="password"
       autocomplete="current-password"
       placeholder="Enter your password"
-      class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
+      class="w-full border border-base-content/15 bg-transparent px-4 py-2.5 text-base md:text-sm focus:border-base-content focus:outline-none transition-colors duration-300 placeholder:text-neutral/30"
     />
     @if (isValidField('password')) {
       <p class="text-error text-xs mt-1">{{ getFieldError('password') }}</p>
