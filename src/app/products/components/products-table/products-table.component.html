@@ -61,7 +61,10 @@
                   <img
                     [src]="product.images | productImage"
                     [alt]="product.title"
-                    class="w-full h-full object-cover"
+                    class="w-full h-full object-cover transition-opacity duration-300"
+                    loading="lazy"
+                    style="opacity: 0"
+                    (load)="$any($event.target).style.opacity = '1'"
                   />
                 </div>
                 <div class="min-w-0">

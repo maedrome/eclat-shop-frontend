@@ -111,7 +111,10 @@
                   <img
                     [src]="item.product.images | productImage"
                     [alt]="item.product.title"
-                    class="w-12 h-15 object-cover shrink-0 bg-base-200"
+                    class="w-12 h-15 object-cover shrink-0 bg-base-200 transition-opacity duration-300"
+                    loading="lazy"
+                    style="opacity: 0"
+                    (load)="$any($event.target).style.opacity = '1'"
                   />
                 </a>
                 <div class="flex-1 min-w-0">

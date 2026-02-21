@@ -154,7 +154,7 @@
     @if(tempImages().length > 0){
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
         @for(image of tempImages(); track image){
-          <img [src]="image" alt="Preview" class="w-full aspect-square object-cover bg-base-200">
+          <img [src]="image" alt="Preview" class="w-full aspect-square object-cover bg-base-200 transition-opacity duration-300" loading="lazy" style="opacity: 0" (load)="$any($event.target).style.opacity = '1'">
         }
       </div>
     }

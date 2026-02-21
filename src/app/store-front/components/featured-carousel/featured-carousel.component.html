@@ -7,9 +7,12 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 md:items-center">
               <a [routerLink]="['/product', product.slug]" class="block overflow-hidden">
                 <img
-                  class="w-full aspect-[3/2] md:aspect-auto xl:aspect-[3/2] object-cover"
+                  class="w-full aspect-[3/2] md:aspect-auto xl:aspect-[3/2] object-cover transition-opacity duration-300"
                   [src]="product.images | productImage"
-                  [alt]="product.title" />
+                  [alt]="product.title"
+                  loading="lazy"
+                  style="opacity: 0"
+                  (load)="$any($event.target).style.opacity = '1'" />
               </a>
               <div class="flex flex-col">
                 <span class="text-xs w-fit pb-3 mb-5 uppercase tracking-widest text-neutral/50 font-montserrat border-b border-base-content/20">{{ product.gender }}</span>

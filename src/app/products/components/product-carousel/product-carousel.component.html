@@ -10,7 +10,7 @@
                 <div class="swiper-wrapper sm:justify-center items-center gap-1">
                     @for(image of images(); track image){
                         <div class="swiper-slide w-[50px]! h-[50px]! overflow-hidden border border-base-content/10 cursor-pointer transition-colors duration-200">
-                            <img [src]="image | productImage" class="block w-full h-full object-cover">
+                            <img [src]="image | productImage" class="block w-full h-full object-cover transition-opacity duration-300" loading="lazy" style="opacity: 0" (load)="$any($event.target).style.opacity = '1'">
                         </div>
                     }
                 </div>
@@ -25,11 +25,11 @@
         <div class="swiper-wrapper">
             @for(image of images(); track image){
                 <div class="swiper-slide">
-                    <img [src]="image | productImage" class="block aspect-square w-full h-full object-contain!">
+                    <img [src]="image | productImage" class="block aspect-square w-full h-full object-contain! transition-opacity duration-300" loading="lazy" style="opacity: 0" (load)="$any($event.target).style.opacity = '1'">
                 </div>
             }@empty {
                 <div class="swiper-slide">
-                    <img [src]="null | productImage" class="block aspect-square w-full h-full object-contain!">
+                    <img [src]="null | productImage" class="block aspect-square w-full h-full object-contain! transition-opacity duration-300" loading="lazy" style="opacity: 0" (load)="$any($event.target).style.opacity = '1'">
                 </div>
             }
         </div>

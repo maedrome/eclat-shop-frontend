@@ -44,7 +44,10 @@
                             <img
                                 [src]="item.product.images | productImage"
                                 [alt]="item.product.title"
-                                class="w-20 h-26 object-cover bg-base-200"
+                                class="w-20 h-26 object-cover bg-base-200 transition-opacity duration-300"
+                                loading="lazy"
+                                style="opacity: 0"
+                                (load)="$any($event.target).style.opacity = '1'"
                             />
                         </div>
                         <div class="flex-1 min-w-0 flex flex-col">

@@ -81,3 +81,4 @@ html:root:has(#my-drawer-2:checked) {
 html:root:has(#cart-drawer:checked) {
   background-color: var(--color-base-100);
 }
+

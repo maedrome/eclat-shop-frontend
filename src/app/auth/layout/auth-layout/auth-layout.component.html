@@ -7,7 +7,9 @@
     <img
       src="images/auth-hero.png"
       alt=""
-      class="absolute inset-0 w-full h-full object-cover object-top lg:object-[50%_25%]"
+      class="absolute inset-0 w-full h-full object-cover object-top lg:object-[50%_25%] transition-opacity duration-300"
+      style="opacity: 0"
+      (load)="$any($event.target).style.opacity = '1'"
     />
 
     <!-- Overlay — only darkens bottom half for tagline readability, top stays natural -->
@@ -18,7 +20,7 @@
 
       <!-- Logo — sits on the natural light background of the image -->
       <a routerLink="/" class="text-2xl tracking-wide font-montserrat select-none block w-fit text-shadow-sm">
-        <span class="text-base-content">Tesso</span> <span class="text-primary">| Shop</span>
+        <span class="text-base-content">Sukia </span> <span class="text-primary">| Store</span>
       </a>
 
       <!-- Tagline — positioned roughly 1/3 from top -->
@@ -33,7 +35,7 @@
 
       <!-- Copyright anchored at bottom -->
       <p class="mt-auto text-white/20 text-xs font-montserrat uppercase tracking-widest select-none text-shadow-sm">
-        &copy; 2026 Tesso Shop
+        &copy; 2026 Sukia Store
       </p>
 
     </div>
@@ -46,7 +48,7 @@
       <!-- Mobile logo (visible on < lg) -->
       <div class="lg:hidden mb-10 text-center">
         <a routerLink="/" class="text-3xl tracking-wide font-montserrat select-none">
-          Tesso <span class="text-primary">| Shop</span>
+          Sukia <span class="text-primary">| Store</span>
         </a>
       </div>
 
